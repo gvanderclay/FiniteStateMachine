@@ -32,6 +32,13 @@ public class State {
 		this.transition.put(c, state);
 	}
 	
+	public void addMultipleSelfStateTransitions(char[] transitions){
+		for(int i = 0; i < transitions.length; i++){
+			Character c = new Character(transitions[i]);
+			addTransition(c, this);
+		}
+	}
+	
 	public String getName(){
 		return this.name;
 	}

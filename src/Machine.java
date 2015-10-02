@@ -1,10 +1,13 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Machine {
 
 	public static void main(String args[]){
 		
-		char[] withoutFiveAndSeven = {1,2,3,4,6};
-		char[] all = {1,2,3,4,5,6,7};
+		char[] withoutFiveAndSeven = {'1','2','3','4','6'};
+		char[] all = {'1','2','3','4','5','6','7'};
 		
 //		for(int s = 0; s <= 4; s++){
 //			for(int f = 0; f <= 2; f++){
@@ -25,32 +28,32 @@ public class Machine {
 //		}
 		
 		State s0f0 = new State("s0f0", false);
-		addMultipleSelfStateTransitions(s0f0, withoutFiveAndSeven);
+		s0f0.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s0f1 = new State("s0f1", false);
-		addMultipleSelfStateTransitions(s0f1, withoutFiveAndSeven);
+		s0f1.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s0f2 = new State("s0f2", false);
-		addMultipleSelfStateTransitions(s0f2, withoutFiveAndSeven);
+		s0f2.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s1f0 = new State("s1f0", false);
-		addMultipleSelfStateTransitions(s1f0, withoutFiveAndSeven);
+		s1f0.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s1f1 = new State("s1f1", false);
-		addMultipleSelfStateTransitions(s1f1, withoutFiveAndSeven);
+		s1f1.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s1f2 = new State("s1f2", false);
-		addMultipleSelfStateTransitions(s1f2, withoutFiveAndSeven);
+		s1f2.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s2f0 = new State("s2f0", false);
-		addMultipleSelfStateTransitions(s2f0, withoutFiveAndSeven);
+		s2f0.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s2f1 = new State("s2f1", false);
-		addMultipleSelfStateTransitions(s2f1, withoutFiveAndSeven);
+		s2f1.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s2f2 = new State("s2f2", false);
-		addMultipleSelfStateTransitions(s2f2, withoutFiveAndSeven);
+		s2f2.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s3f0 = new State("s3f0", false);
-		addMultipleSelfStateTransitions(s3f0, withoutFiveAndSeven);
+		s3f0.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s3f1 = new State("s3f1", false);
-		addMultipleSelfStateTransitions(s3f1, withoutFiveAndSeven);
+		s3f1.addMultipleSelfStateTransitions(withoutFiveAndSeven);
 		State s3f2 = new State("s3f2", true);
-		addMultipleSelfStateTransitions(s3f2, withoutFiveAndSeven);
-		State s4 = new State("s4f0", false);
-		addMultipleSelfStateTransitions(s4, all);
-		
+		s3f2.addMultipleSelfStateTransitions(withoutFiveAndSeven);
+		State s4 = new State("s4", false);
+		s4.addMultipleSelfStateTransitions(all);
+
 		s0f0.addTransition('5', s0f1);
 		s0f0.addTransition('7', s1f0);
 		s0f1.addTransition('5', s0f2);
@@ -76,7 +79,30 @@ public class Machine {
 		s3f2.addTransition('5', s3f2);
 		s3f2.addTransition('7', s4);
 		
-		System.out.println(transition("55777", s0f0));
+		try {
+			processFile("test.txt", s0f0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void processFile(String fileName, State startState) throws IOException{
+		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+		    String line;
+		    int i = 1;
+		    while ((line = br.readLine()) != null) {
+		       System.out.println("PROCESSING LINE " + i + "\n----------------");
+		       boolean isAccepted = transition(line, startState);
+		       if(isAccepted){
+		    	   System.out.println("Input is accepted");
+		       }
+		       else{
+		    	   System.out.println("Input is not accepted");
+		       }
+		       System.out.println("----------------");
+		    }
+		}
 	}
 	
 	private static void addMultipleSelfStateTransitions(State state, char[] transitions){
