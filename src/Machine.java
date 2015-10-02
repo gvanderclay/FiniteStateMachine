@@ -105,13 +105,6 @@ public class Machine {
 		}
 	}
 	
-	private static void addMultipleSelfStateTransitions(State state, char[] transitions){
-		for(int i = 0; i < transitions.length; i++){
-			Character c = new Character(transitions[i]);
-			state.addTransition(c, state);
-		}
-	}
-	
 	public static boolean transition(String input, State startState){
 		State nextState = startState;
 		System.out.println(nextState.getName());
